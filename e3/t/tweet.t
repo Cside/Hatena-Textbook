@@ -1,24 +1,20 @@
-package test::Tweet;
+#!perl -w
 use strict;
-use warnings;
-use base qw(Test::Class);
 use Test::More;
 
 use Bird;
 use Tweet;
 use Forest;
 
-sub init : Test(1) {
+subtest init => sub {
     new_ok 'Tweet';
-}
+};
 
-sub attr : Tests {
+subtest attr => sub {
     my $owner = Bird->new(name => "hoge");
     my $msg = Tweet->new(owner => $owner, message => "foobar");
     is $msg->message, "foobar";
     is $msg->owner, $owner;
-}
+};
 
-__PACKAGE__->runtests;
-
-1;
+done_testing;

@@ -1,35 +1,33 @@
-package test::Forest;
+#!perl -w
 use strict;
-use warnings;
-use base qw(Test::Class);
 use Test::More;
 
 use Bird;
 use Tweet;
 use Forest;
 
-sub init : Test(1) {
+subtest init => sub {
     new_ok 'Forest';
-}
+};
 
-sub register_birds : Tests {
+subtest register_birds => sub {
     my $f = Forest->new;
     my $b1 = Bird->new(name => "b1", forest => $f);
     my $b2 = Bird->new(name => "b2", forest => $f);
     my $b3 = Bird->new(name => "b3", forest => $f);
     is scalar @{$f->{birds}}, 3;
     is_deeply [map { $_->name } @{$f->{birds}}], [qw/b1 b2 b3/];
-}
+};
 
-sub duplicated_register_birds : Tests {
+subtest duplicated_register_birds => sub {
     my $f = Forest->new;
     my $b1 = Bird->new(name => "b1", forest => $f);
     # Duplicated name: throw an exception
     my $b2 = eval { Bird->new(name => "b1", forest => $f) };
     is (X::BirdExists->caught(), 'Bird name b1 already registered.');
-}
+};
 
-sub follow :Tests {
+subtest follow => sub {
     my $f = Forest->new;
     my $b1 = Bird->new(name => "b1", forest => $f);
     my $b2 = Bird->new(name => "b2", forest => $f);
@@ -49,9 +47,9 @@ sub follow :Tests {
     is_deeply ($b2->followers, [$b1, ]);
     is_deeply ($b2->followees, [$b1, $b3]);
     is_deeply ($b3->followers, [$b1, $b2]);
-}
+};
 
-sub follow_duplicate :Tests {
+subtest follow_duplicate => sub {
     my $f = Forest->new;
     my $b1 = Bird->new(name => "b1", forest => $f);
     my $b2 = Bird->new(name => "b2", forest => $f);
@@ -60,9 +58,9 @@ sub follow_duplicate :Tests {
     $b1->follow($b2->name);
     is_deeply ($b1->followees, [$b2, ]);
     is_deeply ($b2->followers, [$b1, ]);
-}
+};
 
-sub tweet :Tests {
+subtest tweet => sub {
     my $f = Forest->new;
     my $b1 = Bird->new(name => "b1", forest => $f);
     my $b2 = Bird->new(name => "b2", forest => $f);
@@ -76,8 +74,6 @@ sub tweet :Tests {
     is $b2->friends_timeline->[0]->message, "Hello!";
     is $b2->friends_timeline->[1]->message, "Hi!";
     is $b2->friends_timeline->[2]->message, "hoge";
- }
+};
 
- __PACKAGE__->runtests;
-
-1;
+done_testing;

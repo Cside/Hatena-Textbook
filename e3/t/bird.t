@@ -1,24 +1,22 @@
-package test::Bird;
+#!perl -w
 use strict;
-use warnings;
-use base qw(Test::Class);
 use Test::More;
 
 use Bird;
 use Forest;
 
-sub init : Test(1) {
+subtest init => sub {
     new_ok 'Bird';
-}
+};
 
-sub attr : Tests {
+subtest attr => sub {
     my $forest = Forest->new;
     my $bird = Bird->new(name => "hoge", forest => $forest);
     is $bird->name, "hoge";
     is $bird->{forest}, $forest;
-}
+};
 
-__PACKAGE__->runtests;
+done_testing;
 
 1;
 
