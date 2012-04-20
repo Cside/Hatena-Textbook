@@ -2,6 +2,9 @@ package Tweet;
 
 use strict;
 use warnings;
+use Class::Accessor::Lite (
+    rw => [qw(message stamp owner)],
+);
 
 use DateTime;
 use Time::HiRes;
@@ -16,23 +19,6 @@ sub new {
         message => $info{message},
     };
     return bless $self, $class;
-}
-
-# Accessors
-
-sub message {
-    my $self = shift;
-    return $self->{message};
-}
-
-sub stamp {
-    my $self = shift;
-    return $self->{stamp};
-}
-
-sub owner {
-    my $self = shift;
-    return $self->{owner};
 }
 
 sub timestamp {

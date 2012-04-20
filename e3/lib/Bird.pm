@@ -2,6 +2,9 @@ package Bird;
 
 use strict;
 use warnings;
+use Class::Accessor::Lite (
+    rw => [qw(followees followers name)],
+);
 
 use Tweet;
 
@@ -20,27 +23,6 @@ sub new {
         $info{forest}->onRegister($self);
     }
     return $self;
-}
-
-# Accessors
-sub name {
-    my $self = shift;
-    my $name = shift;
-    if (!defined $name) {
-        return $self->{name};
-    }
-    $self->{name} = $name;
-    return $self->{name};
-}
-
-sub followees {
-    my $self = shift;
-    return $self->{followees};
-}
-
-sub followers {
-    my $self = shift;
-    return $self->{followers};
 }
 
 # APIs
